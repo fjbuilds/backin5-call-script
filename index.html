@@ -64,11 +64,13 @@
   }
   .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
   .filter-item { font-size: 13px; color: var(--text); }
-  .obj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 6px; margin-bottom: 4px; }
+  .obj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 4px; }
+  @media (min-width: 480px) { .obj-grid { grid-template-columns: repeat(4, 1fr); } }
   .obj-chip {
     background: var(--card); border: 1px solid var(--border); color: var(--text-secondary);
     font-family: inherit; font-size: 13px; font-weight: 500;
-    padding: 10px 10px; border-radius: 9px; cursor: pointer; text-align: center;
+    padding: 10px 8px; border-radius: 9px; cursor: pointer; text-align: center;
+    min-height: 40px; display: flex; align-items: center; justify-content: center;
   }
   .obj-chip:hover { background: var(--card-raised); color: var(--text); }
   .obj-chip.active { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
@@ -90,12 +92,13 @@
   .eyebrow.success { color: var(--success); }
   .eyebrow.danger { color: var(--danger); }
   .prompt { font-size: 14px; color: var(--text-secondary); margin: 4px 0 10px; }
-  .btn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin-bottom: 4px; }
+  .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 4px; }
+  @media (min-width: 480px) { .btn-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
   button.choice {
     background: var(--card); border: 1px solid var(--border); color: var(--text);
     font-family: inherit; font-size: 14px; font-weight: 500;
     padding: 12px 14px; border-radius: 10px; cursor: pointer;
-    text-align: left;
+    text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center;
   }
   button.choice:hover { background: var(--card-raised); border-color: var(--text-muted); }
   button.choice.good { border-color: var(--success-border); color: var(--success); }
@@ -203,10 +206,10 @@
 
   <!-- STEP IFFY -->
   <div class="step" data-step="iffy">
-    <p class="eyebrow neutral">Not a script line, this is what to actually do</p>
-    <div class="script-line">
-      <p class="prompt" style="margin:0;">They haven't earned you the right to pitch yet. Don't move to the solution. Go back and re-ask the frequency question, or re-confirm the pain in a different way, let them sit with it a bit longer before you try the exposure line again. If they hedge a second time after that, that's a real answer, end the call clean rather than pushing a third time.</p>
-    </div>
+    <p class="eyebrow neutral">Not a script line, what to actually do</p>
+    <p class="prompt">Don't pitch yet, they haven't earned it.</p>
+    <p class="prompt">Re-ask the frequency question, or re-confirm the pain a different way.</p>
+    <p class="prompt">Hedge a second time, that's a real answer, end it clean.</p>
     <div class="btn-grid">
       <button class="choice good" onclick="goTo(2)">Re-ask, back to quantify</button>
       <button class="choice bad" onclick="goTo('exit')">Still hedging, end call</button>

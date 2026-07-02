@@ -165,9 +165,7 @@
   <!-- STEP 2: QUANTIFY, ONE FLOWING CARD -->
   <div class="step" data-step="2">
     <p class="eyebrow neutral">Say this in sequence</p>
-    <div class="script-line">
-      <p class="script-text">"I'd guess that's at least a couple times a week when you're properly busy, would that be fair or is it worse than that?"</p>
-    </div>
+    <div class="script-line" id="freqLine"></div>
     <div class="script-line" id="costHandle"></div>
     <div class="script-line">
       <p class="script-text">"So that's X a week. Over a month that's &pound;X. Over the year, &pound;X you've handed to someone else." <span class="script-note">Pause. Don't fill it.</span></p>
@@ -211,10 +209,7 @@
       <p class="script-text">"This is exactly what BackIn5 sorts. Every enquiry, whatever comes in, wherever it's from, lands in one place, and gets an instant reply and follow-up even when you can't get to the phone. Think of it like having someone permanently answering for you, without hiring anyone."</p>
     </div>
     <div class="script-line">
-      <p class="script-text">"That's the gap we just talked about, closed. Does that line up with what you want fixed?" <span class="script-note">Stop talking. Let them answer.</span></p>
-    </div>
-    <div class="script-line">
-      <p class="script-text">"Before I show you anything, if this works exactly like I've just described, is that something you'd actually want running in your business?"</p>
+      <p class="script-text">"This closes exactly the gap we talked about. If it works like I've just described, would you actually want that running in your business?" <span class="script-note">Stop talking. Let them answer.</span></p>
     </div>
     <div class="script-line">
       <p class="eyebrow neutral" style="margin-bottom:6px;">If they hesitate, want to see it first</p>
@@ -252,10 +247,19 @@
 </div>
 
 <script>
-  const costHandles = {
-    missed: "\u201cFor an emergency call-out like that, I\u2019m assuming you\u2019re looking at \u00a3150 to \u00a3300 depending on the job, that about right?\u201d",
-    checkatrade: "\u201cI\u2019m assuming you\u2019re paying a fair bit between the Checkatrade subscription and the cost per lead, that about right?\u201d",
-    timewaster: "\u201cI\u2019d guess a dead quote costs you the best part of an hour once it\u2019s all said and done, fair or is it more? And what\u2019s an hour of your time worth?\u201d"
+  const painLines = {
+    missed: {
+      freq: "\u201cI\u2019d guess that\u2019s at least a couple of missed calls a week when you\u2019re properly busy, fair or worse than that?\u201d",
+      cost: "\u201cFor an emergency call-out like that, I\u2019m assuming you\u2019re looking at \u00a3150 to \u00a3300 depending on the job, that about right?\u201d"
+    },
+    checkatrade: {
+      freq: "\u201cI\u2019m assuming you\u2019re on one of the higher Checkatrade packages, closer to \u00a32k a year than the basic \u00a3300, that about right?\u201d",
+      cost: "\u201cAnd out of the leads that brings in, how many a week would you say go nowhere, either you weren\u2019t first to respond or they were never serious?\u201d"
+    },
+    timewaster: {
+      freq: "\u201cI\u2019d guess you\u2019re getting at least one or two of those a week, quotes that just fizzle out, fair or worse?\u201d",
+      cost: "\u201cWhen one of those doesn\u2019t turn into work, how long does that eat up start to finish? And what\u2019s an hour of your time worth?\u201d"
+    }
   };
 
   const objections = [
@@ -387,7 +391,9 @@
 
   function choosePain(pain) {
     painChoice = pain;
-    document.getElementById('costHandle').innerHTML = '<p class="script-text">' + costHandles[pain] + '</p>';
+    const lines = painLines[pain];
+    document.getElementById('freqLine').innerHTML = '<p class="script-text">' + lines.freq + '</p>';
+    document.getElementById('costHandle').innerHTML = '<p class="script-text">' + lines.cost + '</p>';
     goTo(2);
   }
 

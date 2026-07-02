@@ -162,114 +162,83 @@
     </div>
   </div>
 
-  <!-- STEP 2: FREQUENCY ASSUMPTION -->
+  <!-- STEP 2: QUANTIFY, ONE FLOWING CARD -->
   <div class="step" data-step="2">
-    <p class="eyebrow neutral">Frequency, stated as assumption</p>
+    <p class="eyebrow neutral">Say this in sequence</p>
     <div class="script-line">
       <p class="script-text">"I'd guess that's at least a couple times a week when you're properly busy, would that be fair or is it worse than that?"</p>
     </div>
-    <p class="prompt">What did they say?</p>
-    <div class="btn-grid">
-      <button class="choice good" onclick="goTo(3)">Confirms, or worse</button>
-      <button class="choice" onclick="goTo('iffy')">Pushes back, sounds infrequent</button>
-    </div>
-  </div>
-
-  <!-- STEP EXIT (gate fail after exposure) -->
-  <div class="step" data-step="exit">
-    <p class="eyebrow danger">End the call here</p>
-    <div class="exit-box">
-      <p class="script-text">"Fair enough, sounds like it's not really biting for you at the moment. No harm, I'll leave you to it, appreciate you taking the call."</p>
-    </div>
-    <p class="prompt">Log as gate fail after repeated hedging.</p>
-    <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
-  </div>
-
-  <!-- STEP 3: QUANTIFY + EXPOSURE -->
-  <div class="step" data-step="3">
-    <p class="eyebrow success">Quantify, assumption-led</p>
     <div class="script-line" id="costHandle"></div>
     <div class="script-line">
-      <p class="eyebrow neutral" style="margin-bottom:6px;">The maths, say slow, let it land</p>
       <p class="script-text">"So that's X a week. Over a month that's &pound;X. Over the year, &pound;X you've handed to someone else." <span class="script-note">Pause. Don't fill it.</span></p>
     </div>
     <div class="script-line">
-      <p class="eyebrow neutral" style="margin-bottom:6px;">The exposure, this is the real gate</p>
       <p class="script-text">"So just to put that back to you, in a year of you being flat out busy, that's still [&pound;X] walking out the door to whoever picked up the phone faster, or a lead you paid for going nowhere. Is that a position you're alright with, or does that need sorting?"</p>
     </div>
     <p class="prompt">What did they say?</p>
     <div class="btn-grid">
-      <button class="choice good" onclick="goTo(4)">No, needs sorting</button>
-      <button class="choice" onclick="goTo('iffy')">Iffy, hedging</button>
+      <button class="choice good" onclick="goTo(3)">Needs sorting</button>
+      <button class="choice" onclick="goTo('iffy')">Sounds thin</button>
     </div>
   </div>
 
-  <!-- STEP IFFY -->
+  <!-- STEP IFFY, A LINE TO SAY, NOT A NOTE -->
   <div class="step" data-step="iffy">
-    <p class="eyebrow neutral">Not a script line, what to actually do</p>
-    <p class="prompt">Don't pitch yet, they haven't earned it.</p>
-    <p class="prompt">Re-ask the frequency question, or re-confirm the pain a different way.</p>
-    <p class="prompt">Hedge a second time, that's a real answer, end it clean.</p>
+    <p class="eyebrow neutral">Say this</p>
+    <div class="script-line">
+      <p class="script-text">"Sounds like it's not too bad then? Or does it get worse when you're properly slammed?"</p>
+    </div>
+    <p class="prompt">What did they say?</p>
     <div class="btn-grid">
-      <button class="choice good" onclick="goTo(2)">Re-ask, back to quantify</button>
-      <button class="choice bad" onclick="goTo('exit')">Still hedging, end call</button>
+      <button class="choice good" onclick="goTo(2)">That opened it up</button>
+      <button class="choice bad" onclick="goTo('exit')">Still nothing there</button>
     </div>
   </div>
 
-  <!-- STEP 4: SOLUTION -->
-  <div class="step" data-step="4">
-    <p class="eyebrow neutral">Present the solution, short, one line</p>
+  <!-- STEP EXIT -->
+  <div class="step" data-step="exit">
+    <p class="eyebrow danger">Say this, then end the call</p>
+    <div class="exit-box">
+      <p class="script-text">"Fair enough, sounds like it's not really biting for you at the moment. No harm, I'll leave you to it, appreciate you taking the call."</p>
+    </div>
+    <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
+  </div>
+
+  <!-- STEP 3: SOLUTION + PRE-CLOSE, ONE FLOWING CARD -->
+  <div class="step" data-step="3">
+    <p class="eyebrow neutral">Say this in sequence</p>
     <div class="script-line">
       <p class="script-text">"This is exactly what BackIn5 sorts. Every enquiry, whatever comes in, wherever it's from, lands in one place, and gets an instant reply and follow-up even when you can't get to the phone. Think of it like having someone permanently answering for you, without hiring anyone."</p>
     </div>
     <div class="script-line">
       <p class="script-text">"That's the gap we just talked about, closed. Does that line up with what you want fixed?" <span class="script-note">Stop talking. Let them answer.</span></p>
     </div>
-    <div class="btn-grid">
-      <button class="choice" onclick="goTo(5)">Continue to pre-close</button>
-    </div>
-  </div>
-
-  <!-- STEP 5: PRE-CLOSE -->
-  <div class="step" data-step="5">
-    <p class="eyebrow neutral">Pre-close, commitment before the demo</p>
     <div class="script-line">
       <p class="script-text">"Before I show you anything, if this works exactly like I've just described, is that something you'd actually want running in your business?"</p>
     </div>
-    <p class="prompt">What did they say?</p>
-    <div class="btn-grid">
-      <button class="choice good" onclick="goTo('close')">Yes</button>
-      <button class="choice" onclick="goTo('hedge')">Hedge, "need to see first"</button>
-      <button class="choice bad" onclick="goTo('exit2')">No</button>
-    </div>
-  </div>
-
-  <!-- STEP HEDGE -->
-  <div class="step" data-step="hedge">
-    <p class="eyebrow neutral">Get them back to yes first</p>
     <div class="script-line">
+      <p class="eyebrow neutral" style="margin-bottom:6px;">If they hesitate, want to see it first</p>
       <p class="script-text">"Fair, and if on seeing it, it's exactly what we've talked about, would you move forward?"</p>
     </div>
-    <p class="prompt">Did that bring them back to yes?</p>
+    <p class="prompt">What did they say?</p>
     <div class="btn-grid">
-      <button class="choice good" onclick="goTo('close')">Yes, now</button>
-      <button class="choice bad" onclick="goTo('exit2')">Still no</button>
+      <button class="choice good" onclick="goTo('close')">Yes, moving forward</button>
+      <button class="choice bad" onclick="goTo('exit2')">No, not now</button>
     </div>
   </div>
 
   <!-- STEP EXIT 2 (pre-close no) -->
   <div class="step" data-step="exit2">
-    <p class="eyebrow danger">Don't push into a demo anyway</p>
+    <p class="eyebrow danger">Say this, then end the call</p>
     <div class="exit-box">
       <p class="script-text">"Fair enough, sounds like it's not the right fit or the right time. No harm, appreciate you talking it through, I'll leave it there."</p>
     </div>
-    <p class="prompt">Ending clean here is deliberate. Chasing a no with a demo anyway signals you need the deal.</p>
     <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
   </div>
 
   <!-- STEP CLOSE -->
   <div class="step" data-step="close">
-    <p class="eyebrow neutral">Close</p>
+    <p class="eyebrow neutral">Say this</p>
     <div class="script-line">
       <p class="script-text">"Good, then it's worth 3 minutes on WhatsApp video so you can see it live, not just hear me describe it. If you like it, I'll set you up on a 7 day trial. Morning or afternoon tomorrow?"</p>
     </div>
@@ -381,8 +350,8 @@
     renderObjGrid();
   }
   let painChoice = null;
-  const stepOrder = [1, 2, 3, 4, 5];
-  const progressMap = { 1: 1, 2: 2, exit: 2, 3: 3, iffy: 3, 4: 4, 5: 5, hedge: 5, exit2: 5, close: 5 };
+  const stepOrder = [1, 2, 3, 4];
+  const progressMap = { 1: 1, 2: 2, iffy: 2, exit: 2, 3: 3, exit2: 3, close: 4 };
 
   function renderProgress() {
     const el = document.getElementById('progress');

@@ -149,7 +149,7 @@
   <div class="step active" data-step="1">
     <p class="eyebrow neutral">Opener</p>
     <div class="script-line">
-      <p class="script-text">"[Name], it's Owen from BackIn5. Quick reason I'm calling. When I speak to [trade] firms around [area], it's nearly always the same three things costing them money. Missed calls while you're on the tools, by the time you ring back the customer's already booked someone else. Checkatrade or directory leads going to whoever responds first. And time waster jobs, half a day going back and forth with someone who never had a budget. Which one of those rings true for you? And which would be the main one?"</p>
+      <p class="script-text">"[Name], it's Owen from BackIn5. Reason I'm calling is, when I speak to [trade] firms doing emergency work, it's nearly always the same three things costing them money. I'm assuming at least one of these rings true for you, missed calls while you're on the tools, Checkatrade and directory leads going to whoever responds first, or half a day lost to someone just fishing for quotes. Which one's the real one for you?"</p>
     </div>
     <p class="prompt">Which pain did they pick?</p>
     <div class="btn-grid">
@@ -159,61 +159,119 @@
     </div>
   </div>
 
-  <!-- STEP 2: REVEAL GATE -->
+  <!-- STEP 2: FREQUENCY ASSUMPTION -->
   <div class="step" data-step="2">
-    <p class="eyebrow neutral">Reveal gate, same for all three</p>
+    <p class="eyebrow neutral">Frequency, stated as assumption</p>
     <div class="script-line">
-      <p class="script-text">"Has that actually cost you a job you know of, or just a feeling it happens?"</p>
+      <p class="script-text">"I'd guess that's at least a couple times a week when you're properly busy, would that be fair or is it worse than that?"</p>
     </div>
     <p class="prompt">What did they say?</p>
     <div class="btn-grid">
-      <button class="choice good" onclick="goTo(3)">Real story, specific job lost</button>
-      <button class="choice bad" onclick="goTo('exit')">Just a feeling, no story</button>
+      <button class="choice good" onclick="goTo(3)">Confirms, or worse</button>
+      <button class="choice" onclick="goTo('iffy')">Pushes back, sounds infrequent</button>
     </div>
   </div>
 
-  <!-- STEP EXIT -->
+  <!-- STEP EXIT (gate fail after exposure) -->
   <div class="step" data-step="exit">
     <p class="eyebrow danger">End the call here</p>
     <div class="exit-box">
       <p class="script-text">"Fair enough, sounds like it's not really biting for you at the moment. No harm, I'll leave you to it, appreciate you taking the call."</p>
     </div>
-    <p class="prompt">Log as gate fail. Don't push into the maths, it won't hold. Move to the next number.</p>
+    <p class="prompt">Log as gate fail after repeated hedging.</p>
     <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
   </div>
 
-  <!-- STEP 3: QUANTIFY -->
+  <!-- STEP 3: QUANTIFY + EXPOSURE -->
   <div class="step" data-step="3">
-    <p class="eyebrow success">Quantify, gate passed</p>
-    <div class="script-line">
-      <p class="script-text">"How often is that happening, week or month?"</p>
-    </div>
+    <p class="eyebrow success">Quantify, assumption-led</p>
     <div class="script-line" id="costHandle"></div>
     <div class="script-line">
       <p class="eyebrow neutral" style="margin-bottom:6px;">The maths, say slow, let it land</p>
       <p class="script-text">"So that's X a week. Over a month that's &pound;X. Over the year, &pound;X you've handed to someone else." <span class="script-note">Pause. Don't fill it.</span></p>
     </div>
     <div class="script-line">
-      <p class="script-text">"How long has that been going on?" <span class="script-note">Multiply monthly &times; 12, say it back.</span> "And have you done anything to try and fix it?"</p>
+      <p class="eyebrow neutral" style="margin-bottom:6px;">The exposure, this is the real gate</p>
+      <p class="script-text">"So just to put that back to you, in a year of you being flat out busy, that's still [&pound;X] walking out the door to whoever picked up the phone faster, or a lead you paid for going nowhere. Is that a position you're alright with, or does that need sorting?"</p>
     </div>
-    <p class="prompt">Have they tried anything already?</p>
+    <p class="prompt">What did they say?</p>
     <div class="btn-grid">
-      <button class="choice good" onclick="goTo(4)">Yes, tried something</button>
-      <button class="choice" onclick="goTo(4)">No, hasn't come up</button>
+      <button class="choice good" onclick="goTo(4)">No, needs sorting</button>
+      <button class="choice" onclick="goTo('iffy')">Iffy, hedging</button>
     </div>
   </div>
 
-  <!-- STEP 4: CLOSE -->
+  <!-- STEP IFFY -->
+  <div class="step" data-step="iffy">
+    <p class="eyebrow neutral">Not a script line, this is what to actually do</p>
+    <div class="script-line">
+      <p class="prompt" style="margin:0;">They haven't earned you the right to pitch yet. Don't move to the solution. Go back and re-ask the frequency question, or re-confirm the pain in a different way, let them sit with it a bit longer before you try the exposure line again. If they hedge a second time after that, that's a real answer, end the call clean rather than pushing a third time.</p>
+    </div>
+    <div class="btn-grid">
+      <button class="choice good" onclick="goTo(2)">Re-ask, back to quantify</button>
+      <button class="choice bad" onclick="goTo('exit')">Still hedging, end call</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: SOLUTION -->
   <div class="step" data-step="4">
+    <p class="eyebrow neutral">Present the solution, short, one line</p>
+    <div class="script-line">
+      <p class="script-text">"This is exactly what BackIn5 sorts. Every enquiry, whatever comes in, wherever it's from, lands in one place, and gets an instant reply and follow-up even when you can't get to the phone. Think of it like having someone permanently answering for you, without hiring anyone."</p>
+    </div>
+    <div class="script-line">
+      <p class="script-text">"That's the gap we just talked about, closed. Does that line up with what you want fixed?" <span class="script-note">Stop talking. Let them answer.</span></p>
+    </div>
+    <div class="btn-grid">
+      <button class="choice" onclick="goTo(5)">Continue to pre-close</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: PRE-CLOSE -->
+  <div class="step" data-step="5">
+    <p class="eyebrow neutral">Pre-close, commitment before the demo</p>
+    <div class="script-line">
+      <p class="script-text">"Before I show you anything, if this works exactly like I've just described, is that something you'd actually want running in your business?"</p>
+    </div>
+    <p class="prompt">What did they say?</p>
+    <div class="btn-grid">
+      <button class="choice good" onclick="goTo('close')">Yes</button>
+      <button class="choice" onclick="goTo('hedge')">Hedge, "need to see first"</button>
+      <button class="choice bad" onclick="goTo('exit2')">No</button>
+    </div>
+  </div>
+
+  <!-- STEP HEDGE -->
+  <div class="step" data-step="hedge">
+    <p class="eyebrow neutral">Get them back to yes first</p>
+    <div class="script-line">
+      <p class="script-text">"Fair, and if on seeing it, it's exactly what we've talked about, would you move forward?"</p>
+    </div>
+    <p class="prompt">Did that bring them back to yes?</p>
+    <div class="btn-grid">
+      <button class="choice good" onclick="goTo('close')">Yes, now</button>
+      <button class="choice bad" onclick="goTo('exit2')">Still no</button>
+    </div>
+  </div>
+
+  <!-- STEP EXIT 2 (pre-close no) -->
+  <div class="step" data-step="exit2">
+    <p class="eyebrow danger">Don't push into a demo anyway</p>
+    <div class="exit-box">
+      <p class="script-text">"Fair enough, sounds like it's not the right fit or the right time. No harm, appreciate you talking it through, I'll leave it there."</p>
+    </div>
+    <p class="prompt">Ending clean here is deliberate. Chasing a no with a demo anyway signals you need the deal.</p>
+    <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
+  </div>
+
+  <!-- STEP CLOSE -->
+  <div class="step" data-step="close">
     <p class="eyebrow neutral">Close</p>
     <div class="script-line">
-      <p class="script-text">"If you had something that fixed all three, would that be worth looking into?"</p>
+      <p class="script-text">"Good, then it's worth 3 minutes on WhatsApp video so you can see it live, not just hear me describe it. If you like it, I'll set you up on a 7 day trial. Morning or afternoon tomorrow?"</p>
     </div>
     <div class="script-line">
-      <p class="script-text">"Tell you what, rather than fire you a link, I can show you the board in 3 minutes on WhatsApp video. If you like it, I'll send a 7 day trial. Morning or afternoon tomorrow?"</p>
-    </div>
-    <div class="script-line">
-      <p class="eyebrow neutral" style="margin-bottom:6px;">If hesitation</p>
+      <p class="eyebrow neutral" style="margin-bottom:6px;">If hesitation on timing</p>
       <p class="script-text">"Worst case, you take a look and see how to solve it. Best case, we eliminate that issue and you make more money. Morning or afternoon?"</p>
     </div>
     <button class="reset-btn" onclick="resetFlow()">&#8635; Next call</button>
@@ -223,9 +281,9 @@
 
 <script>
   const costHandles = {
-    missed: "\u201cWhat's your average job worth?\u201d",
-    checkatrade: "\u201cAnd what are you paying Checkatrade, both subscription and per lead?\u201d",
-    timewaster: "\u201cWhen a quote doesn't turn into work, how long does that eat up, start to finish? And what's an hour of your time worth?\u201d"
+    missed: "\u201cFor an emergency call-out like that, I\u2019m assuming you\u2019re looking at \u00a3150 to \u00a3300 depending on the job, that about right?\u201d",
+    checkatrade: "\u201cI\u2019m assuming you\u2019re paying a fair bit between the Checkatrade subscription and the cost per lead, that about right?\u201d",
+    timewaster: "\u201cI\u2019d guess a dead quote costs you the best part of an hour once it\u2019s all said and done, fair or is it more? And what\u2019s an hour of your time worth?\u201d"
   };
 
   const objections = [
@@ -282,7 +340,7 @@
       html: '<p class="script-text">"No, little different, more of an intro call, does [x] ring a bell?"</p>'
     },
     {
-      id: 'teases', label: 'Tease bank',
+      id: 'teases', label: 'Preempted objections',
       html: '<p class="script-note" style="margin-bottom:6px;">Pre-empt "not interested" before the close</p>'
         + '<p class="script-text">"This isn\'t a hard sell, if it\'s not for you, I\'ll say so myself."</p>'
         + '<p class="script-note" style="margin:10px 0 6px;">Pre-empt "already sorted" and "not busy enough" in the opener</p>'
@@ -320,15 +378,17 @@
     renderObjGrid();
   }
   let painChoice = null;
-  const stepOrder = [1, 2, 3, 4];
+  const stepOrder = [1, 2, 3, 4, 5];
+  const progressMap = { 1: 1, 2: 2, exit: 2, 3: 3, iffy: 3, 4: 4, 5: 5, hedge: 5, exit2: 5, close: 5 };
 
   function renderProgress() {
     const el = document.getElementById('progress');
     el.innerHTML = '';
     const current = history[history.length - 1];
+    const mapped = progressMap[current] || 1;
     stepOrder.forEach(function(s) {
       const dot = document.createElement('div');
-      dot.className = 'progress-dot' + (stepOrder.indexOf(s) <= stepOrder.indexOf(current === 'exit' ? 2 : current) ? ' done' : '');
+      dot.className = 'progress-dot' + (s <= mapped ? ' done' : '');
       el.appendChild(dot);
     });
   }

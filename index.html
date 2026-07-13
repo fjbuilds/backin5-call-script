@@ -190,6 +190,20 @@
     text-align: center; min-height: 48px;
     display: flex; align-items: center; justify-content: center; gap: 6px;
     transition: all 0.15s;
+    user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+    position: relative;
+  }
+  button.choice.editing {
+    outline: none; cursor: text;
+    user-select: text; -webkit-user-select: text;
+    background: rgba(232, 176, 107, 0.1);
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  button.choice.press-hold {
+    background: var(--card-hover);
+    box-shadow: 0 0 0 2px rgba(232, 176, 107, 0.4);
+    transform: scale(0.98);
   }
   button.choice:hover {
     background: var(--card-hover); border-color: var(--border-strong);
@@ -297,7 +311,7 @@
 
   <div class="edit-hint">
     <span class="edit-hint-dot"></span>
-    Tap any line to edit. Changes save automatically.
+    Tap any line to edit. Press &amp; hold a button to rename it. Changes save automatically.
   </div>
 
   <div class="filter-box">
@@ -683,7 +697,93 @@
     }
   };
 
+  function attachLongPressEdit(btn, key) {
+    if (!btn || btn.dataset.longpressBound === '1') return;
+    btn.dataset.longpressBound = '1';
+    const store = loadEdits();
+    if (store[key] != null) btn.innerHTML = store[key];
+
+    let timer = null;
+    let editing = false;
+    let savedOnclick = null;
+    const HOLD_MS = 500;
+
+    function enterEdit() {
+      timer = null;
+      editing = true;
+      savedOnclick = btn.getAttribute('onclick');
+      if (savedOnclick != null) btn.removeAttribute('onclick');
+      btn.classList.remove('press-hold');
+      btn.classList.add('editing');
+      btn.setAttribute('contenteditable', 'true');
+      btn.setAttribute('spellcheck', 'false');
+      btn.focus();
+      const range = document.createRange();
+      range.selectNodeContents(btn);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    function exitEdit() {
+      if (!editing) return;
+      editing = false;
+      btn.removeAttribute('contenteditable');
+      btn.classList.remove('editing');
+      saveEdit(key, btn.innerHTML);
+      if (savedOnclick != null) {
+        btn.setAttribute('onclick', savedOnclick);
+        savedOnclick = null;
+      }
+    }
+
+    btn.addEventListener('pointerdown', function(e) {
+      if (editing) return;
+      btn.classList.add('press-hold');
+      timer = setTimeout(enterEdit, HOLD_MS);
+    });
+    const cancelHold = function() {
+      btn.classList.remove('press-hold');
+      if (timer) { clearTimeout(timer); timer = null; }
+    };
+    btn.addEventListener('pointerup', cancelHold);
+    btn.addEventListener('pointerleave', cancelHold);
+    btn.addEventListener('pointercancel', cancelHold);
+
+    btn.addEventListener('click', function(e) {
+      if (editing) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    btn.addEventListener('blur', exitEdit);
+    btn.addEventListener('keydown', function(e) {
+      if (editing && e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        btn.blur();
+      }
+      if (editing && e.key === 'Escape') {
+        e.preventDefault();
+        btn.blur();
+      }
+    });
+  }
+
+  function bindChoiceButtons() {
+    document.querySelectorAll('button.choice').forEach(function(btn) {
+      const step = btn.closest('.step');
+      const stepKey = step ? step.getAttribute('data-step') : 'x';
+      const siblings = step ? Array.prototype.slice.call(step.querySelectorAll('button.choice')) : [btn];
+      const idx = siblings.indexOf(btn);
+      attachLongPressEdit(btn, 'btn:' + stepKey + ':' + idx);
+    });
+    document.querySelectorAll('button.reset-btn').forEach(function(btn) {
+      const step = btn.closest('.step');
+      const stepKey = step ? step.getAttribute('data-step') : 'x';
+      attachLongPressEdit(btn, 'resetbtn:' + stepKey);
+    });
+  }
+
   bindStaticEditables();
+  bindChoiceButtons();
   renderObjGrid();
   renderProgress();
 </script>

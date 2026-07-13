@@ -9,131 +9,296 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Source+Serif+4:ital@1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #1B1D1F;
-    --card: #24272A;
-    --card-raised: #2C2F32;
-    --border: #383B3E;
-    --text: #EDEBE6;
-    --text-secondary: #9A9D9F;
-    --text-muted: #6E7173;
-    --accent: #E0A458;
+    --bg: #16181A;
+    --bg-gradient: radial-gradient(ellipse at top, #1F2225 0%, #16181A 60%);
+    --card: #23262A;
+    --card-raised: #2C3035;
+    --card-hover: #2F3338;
+    --border: #34383D;
+    --border-strong: #454A50;
+    --text: #F0EEE8;
+    --text-secondary: #A8ACAF;
+    --text-muted: #74787B;
+    --accent: #E8B06B;
+    --accent-hover: #F0BC7C;
     --accent-text: #2A1D0C;
-    --success: #6FAE8C;
+    --accent-glow: rgba(232, 176, 107, 0.15);
+    --success: #7BC49C;
     --success-bg: #1E2E27;
-    --success-border: #3A5C4A;
-    --danger: #D97B62;
-    --danger-bg: #302019;
-    --danger-border: #5C3B2C;
-    --warn-bg: #33291A;
-    --warn-border: #5A472A;
-    --warn-text: #E0B364;
+    --success-border: #3E6551;
+    --danger: #E38870;
+    --danger-bg: #30201A;
+    --danger-border: #6A4032;
+    --warn-bg: #362B1C;
+    --warn-border: #63502F;
+    --warn-text: #E8BA6C;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.15);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 28px rgba(0,0,0,0.35);
   }
   * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
   body {
     margin: 0;
     background: var(--bg);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
     color: var(--text);
     font-family: 'Inter', -apple-system, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 24px 20px 80px; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 20px 20px 100px; }
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px;
+    padding: 12px 16px; margin: -4px -4px 20px;
+    background: rgba(35, 38, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    position: sticky; top: 12px; z-index: 20;
+    box-shadow: var(--shadow-md);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .brand-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
   .title {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600; font-size: 18px; letter-spacing: -0.01em;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
   }
   .nav-controls { display: flex; gap: 8px; }
   .icon-btn {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--text-secondary); border-radius: 8px;
-    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 15px;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-secondary); border-radius: 10px;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px; transition: all 0.15s;
   }
-  .icon-btn:hover { background: var(--card-raised); color: var(--text); }
-  .icon-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+  .icon-btn:active { transform: translateY(0); }
+  .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+  .icon-btn:disabled:hover { background: transparent; color: var(--text-secondary); border-color: var(--border); }
+
   .filter-box {
-    background: var(--card); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
   }
   .filter-label {
-    font-size: 12px; font-weight: 600; color: var(--text-secondary);
-    text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 8px;
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px;
+    display: flex; align-items: center; gap: 8px;
   }
-  .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
-  .filter-item { font-size: 13px; color: var(--text); }
-  .obj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 4px; }
+  .filter-label::before {
+    content: ''; display: inline-block; width: 4px; height: 4px;
+    border-radius: 50%; background: var(--accent); opacity: 0.7;
+  }
+  .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .filter-item {
+    font-size: 13px; color: var(--text); padding: 8px 12px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .obj-section-label {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin: 4px 0 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .obj-section-label::before {
+    content: ''; display: inline-block; width: 4px; height: 4px;
+    border-radius: 50%; background: var(--warn-text); opacity: 0.7;
+  }
+  .obj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 4px; }
   @media (min-width: 480px) { .obj-grid { grid-template-columns: repeat(4, 1fr); } }
   .obj-chip {
     background: var(--card); border: 1px solid var(--border); color: var(--text-secondary);
     font-family: inherit; font-size: 13px; font-weight: 500;
-    padding: 10px 8px; border-radius: 9px; cursor: pointer; text-align: center;
-    min-height: 40px; display: flex; align-items: center; justify-content: center;
+    padding: 12px 10px; border-radius: 10px; cursor: pointer; text-align: center;
+    min-height: 44px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
   }
-  .obj-chip:hover { background: var(--card-raised); color: var(--text); }
-  .obj-chip.active { background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text); }
-  .obj-display { display: none; background: var(--warn-bg); border-radius: 12px; padding: 14px 16px; margin: 10px 0 16px; }
-  .obj-display.open { display: block; }
+  .obj-chip:hover { background: var(--card-hover); color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+  .obj-chip.active {
+    background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn-text);
+    box-shadow: 0 0 0 2px rgba(232, 186, 108, 0.15);
+  }
+  .obj-display {
+    display: none; background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 14px; padding: 16px 18px; margin: 12px 0 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .obj-display.open { display: block; animation: slideDown 0.2s ease-out; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 16px;
+    box-shadow: var(--shadow-md);
+  }
+  .step-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .step-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px; height: 28px; padding: 0 10px;
+    background: var(--accent-glow); color: var(--accent);
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .step-badge.danger { background: rgba(227, 136, 112, 0.12); color: var(--danger); }
+  .step-badge.success { background: rgba(123, 196, 156, 0.12); color: var(--success); }
+
   .script-line {
-    background: var(--card); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
   }
   .script-text {
     font-family: 'Source Serif 4', serif; font-style: italic;
     font-size: 16px; line-height: 1.65; color: var(--text); margin: 0;
   }
-  .script-note { color: var(--text-muted); font-style: normal; font-size: 14px; }
+  .script-note { color: var(--text-muted); font-style: normal; font-size: 13px; }
   .eyebrow {
-    font-size: 12px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.04em; margin: 0 0 8px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; margin: 0 0 8px;
+    display: flex; align-items: center; gap: 6px;
   }
   .eyebrow.neutral { color: var(--text-muted); }
   .eyebrow.success { color: var(--success); }
   .eyebrow.danger { color: var(--danger); }
-  .prompt { font-size: 14px; color: var(--text-secondary); margin: 4px 0 10px; }
-  .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 4px; }
+  .prompt {
+    font-size: 13px; color: var(--text-secondary); margin: 16px 0 10px;
+    font-weight: 500;
+  }
+  .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 4px; }
   @media (min-width: 480px) { .btn-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
   button.choice {
-    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    background: var(--card-raised); border: 1px solid var(--border); color: var(--text);
     font-family: inherit; font-size: 14px; font-weight: 500;
-    padding: 12px 14px; border-radius: 10px; cursor: pointer;
-    text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center;
+    padding: 14px 16px; border-radius: 12px; cursor: pointer;
+    text-align: center; min-height: 48px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all 0.15s;
   }
-  button.choice:hover { background: var(--card-raised); border-color: var(--text-muted); }
+  button.choice:hover {
+    background: var(--card-hover); border-color: var(--border-strong);
+    transform: translateY(-1px); box-shadow: var(--shadow-sm);
+  }
+  button.choice:active { transform: translateY(0); }
   button.choice.good { border-color: var(--success-border); color: var(--success); }
-  button.choice.good:hover { background: var(--success-bg); }
+  button.choice.good:hover { background: var(--success-bg); box-shadow: 0 4px 12px rgba(123, 196, 156, 0.1); }
   button.choice.bad { border-color: var(--danger-border); color: var(--danger); }
-  button.choice.bad:hover { background: var(--danger-bg); }
+  button.choice.bad:hover { background: var(--danger-bg); box-shadow: 0 4px 12px rgba(227, 136, 112, 0.1); }
+
   .reset-btn {
-    display: inline-flex; align-items: center; gap: 6px;
+    display: inline-flex; align-items: center; gap: 8px;
     background: var(--accent); color: var(--accent-text); border: none;
     font-family: inherit; font-weight: 600; font-size: 14px;
-    padding: 12px 18px; border-radius: 10px; cursor: pointer; margin-top: 8px;
+    padding: 13px 22px; border-radius: 12px; cursor: pointer; margin-top: 12px;
+    box-shadow: 0 4px 12px rgba(232, 176, 107, 0.2);
+    transition: all 0.15s;
   }
-  .reset-btn:hover { opacity: 0.9; }
-  .exit-box { background: var(--danger-bg); border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; }
+  .reset-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(232, 176, 107, 0.3); }
+  .reset-btn:active { transform: translateY(0); }
+
+  .exit-box {
+    background: var(--danger-bg); border: 1px solid var(--danger-border);
+    border-left: 3px solid var(--danger);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  }
   .step { display: none; }
-  .step.active { display: block; }
-  .progress {
-    display: flex; gap: 4px; margin-bottom: 20px;
+  .step.active { display: block; animation: fadeIn 0.25s ease-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .progress-dot { height: 3px; flex: 1; background: var(--border); border-radius: 2px; }
-  .progress-dot.done { background: var(--accent); }
+
+  .progress-wrap { margin-bottom: 18px; }
+  .progress {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  }
+  .progress-step {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: default;
+  }
+  .progress-bar {
+    height: 4px; width: 100%; background: var(--border); border-radius: 2px;
+    transition: background 0.25s;
+  }
+  .progress-step.done .progress-bar { background: var(--accent); }
+  .progress-step.current .progress-bar { background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+  .progress-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted);
+    transition: color 0.25s;
+  }
+  .progress-step.done .progress-label, .progress-step.current .progress-label { color: var(--text-secondary); }
+  .progress-step.current .progress-label { color: var(--accent); }
+
+  .edit-hint {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--text-muted); margin-bottom: 14px;
+    padding: 8px 12px; background: rgba(232, 176, 107, 0.05);
+    border: 1px dashed rgba(232, 176, 107, 0.2);
+    border-radius: 8px;
+  }
+  .edit-hint-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  [contenteditable="true"] {
+    outline: none; border-radius: 6px; transition: box-shadow 0.15s, background 0.15s;
+    padding: 2px 4px; margin: -2px -4px;
+    cursor: text;
+  }
+  [contenteditable="true"]:hover {
+    background: rgba(232, 176, 107, 0.04);
+    box-shadow: 0 0 0 1px rgba(232, 176, 107, 0.2);
+  }
+  [contenteditable="true"]:focus {
+    background: rgba(232, 176, 107, 0.08);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="topbar">
-    <div class="title">BackIn5 call script</div>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div class="title">BackIn5 call script</div>
+    </div>
     <div class="nav-controls">
       <button class="icon-btn" id="backBtn" onclick="goBack()" title="Back" aria-label="Go back">&#8592;</button>
       <button class="icon-btn" onclick="resetFlow()" title="Reset" aria-label="Reset to start">&#8635;</button>
     </div>
   </div>
 
-  <div class="progress" id="progress"></div>
+  <div class="progress-wrap">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="edit-hint">
+    <span class="edit-hint-dot"></span>
+    Tap any line to edit. Changes save automatically.
+  </div>
 
   <div class="filter-box">
     <p class="filter-label">Pre-call filter, dial only if 2 of 3 true</p>
@@ -144,13 +309,16 @@
     </div>
   </div>
 
-  <p class="filter-label" style="margin: 4px 0 8px;">Objections, tap to pull up the response</p>
+  <p class="obj-section-label">Objections, tap to pull up the response</p>
   <div class="obj-grid" id="objGrid"></div>
   <div class="obj-display" id="objDisplay"></div>
 
   <!-- STEP 1: OPENER -->
-  <div class="step active" data-step="1">
-    <p class="eyebrow neutral">Opener</p>
+  <div class="step step-card active" data-step="1">
+    <div class="step-header">
+      <span class="step-badge">Step 1</span>
+      <span class="eyebrow neutral">Opener</span>
+    </div>
     <div class="script-line">
       <p class="script-text">"[Name], it's Owen from BackIn5. Reason I'm calling is, when I speak to [trade] firms doing emergency work, it's nearly always the same three things costing them money. I'm assuming at least one of these rings true for you, missed calls while you're on the tools, Checkatrade and directory leads going to whoever responds first, or half a day lost to someone just fishing for quotes. Which one's the real one for you?"</p>
     </div>
@@ -163,7 +331,11 @@
   </div>
 
   <!-- STEP 2: QUANTIFY, ONE FLOWING CARD -->
-  <div class="step" data-step="2">
+  <div class="step step-card" data-step="2">
+    <div class="step-header">
+      <span class="step-badge">Step 2</span>
+      <span class="eyebrow neutral">Quantify the pain</span>
+    </div>
     <p class="eyebrow neutral">Say this in sequence</p>
     <div class="script-line" id="freqLine"></div>
     <div class="script-line" id="costHandle"></div>
@@ -181,7 +353,11 @@
   </div>
 
   <!-- STEP IFFY, A LINE TO SAY, NOT A NOTE -->
-  <div class="step" data-step="iffy">
+  <div class="step step-card" data-step="iffy">
+    <div class="step-header">
+      <span class="step-badge">Detour</span>
+      <span class="eyebrow neutral">Reopen the pain</span>
+    </div>
     <p class="eyebrow neutral">Say this</p>
     <div class="script-line">
       <p class="script-text">"Sounds like it's not too bad then? Or does it get worse when you're properly slammed?"</p>
@@ -194,7 +370,11 @@
   </div>
 
   <!-- STEP EXIT -->
-  <div class="step" data-step="exit">
+  <div class="step step-card" data-step="exit">
+    <div class="step-header">
+      <span class="step-badge danger">End call</span>
+      <span class="eyebrow danger">Wrap up cleanly</span>
+    </div>
     <p class="eyebrow danger">Say this, then end the call</p>
     <div class="exit-box">
       <p class="script-text">"Fair enough, sounds like it's not really biting for you at the moment. No harm, I'll leave you to it, appreciate you taking the call."</p>
@@ -203,7 +383,11 @@
   </div>
 
   <!-- STEP 3: SOLUTION + PRE-CLOSE, ONE FLOWING CARD -->
-  <div class="step" data-step="3">
+  <div class="step step-card" data-step="3">
+    <div class="step-header">
+      <span class="step-badge">Step 3</span>
+      <span class="eyebrow neutral">Solution &amp; pre-close</span>
+    </div>
     <p class="eyebrow neutral">Say this in sequence</p>
     <div class="script-line">
       <p class="script-text">"This is exactly what BackIn5 sorts. Every enquiry, whatever comes in, wherever it's from, lands in one place, and gets an instant reply and follow-up even when you can't get to the phone. Think of it like having someone permanently answering for you, without hiring anyone."</p>
@@ -223,7 +407,11 @@
   </div>
 
   <!-- STEP EXIT 2 (pre-close no) -->
-  <div class="step" data-step="exit2">
+  <div class="step step-card" data-step="exit2">
+    <div class="step-header">
+      <span class="step-badge danger">End call</span>
+      <span class="eyebrow danger">Wrap up cleanly</span>
+    </div>
     <p class="eyebrow danger">Say this, then end the call</p>
     <div class="exit-box">
       <p class="script-text">"Fair enough, sounds like it's not the right fit or the right time. No harm, appreciate you talking it through, I'll leave it there."</p>
@@ -232,7 +420,11 @@
   </div>
 
   <!-- STEP CLOSE -->
-  <div class="step" data-step="close">
+  <div class="step step-card" data-step="close">
+    <div class="step-header">
+      <span class="step-badge success">Book it</span>
+      <span class="eyebrow success">Close the call</span>
+    </div>
     <p class="eyebrow neutral">Say this</p>
     <div class="script-line">
       <p class="script-text">"Good, then it's worth 3 minutes on WhatsApp video so you can see it live, not just hear me describe it. If you like it, I'll set you up on a 7 day trial. Morning or afternoon tomorrow?"</p>
@@ -357,15 +549,26 @@
   const stepOrder = [1, 2, 3, 4];
   const progressMap = { 1: 1, 2: 2, iffy: 2, exit: 2, 3: 3, exit2: 3, close: 4 };
 
+  const stepLabels = { 1: 'Opener', 2: 'Quantify', 3: 'Solution', 4: 'Book' };
   function renderProgress() {
     const el = document.getElementById('progress');
     el.innerHTML = '';
     const current = history[history.length - 1];
     const mapped = progressMap[current] || 1;
     stepOrder.forEach(function(s) {
-      const dot = document.createElement('div');
-      dot.className = 'progress-dot' + (s <= mapped ? ' done' : '');
-      el.appendChild(dot);
+      const wrap = document.createElement('div');
+      let cls = 'progress-step';
+      if (s < mapped) cls += ' done';
+      if (s === mapped) cls += ' current';
+      wrap.className = cls;
+      const bar = document.createElement('div');
+      bar.className = 'progress-bar';
+      const label = document.createElement('div');
+      label.className = 'progress-label';
+      label.textContent = stepLabels[s];
+      wrap.appendChild(bar);
+      wrap.appendChild(label);
+      el.appendChild(wrap);
     });
   }
 
@@ -407,6 +610,80 @@
     showStep(1);
   }
 
+  const EDIT_STORE_KEY = 'backin5-script-edits-v1';
+  function loadEdits() {
+    try { return JSON.parse(localStorage.getItem(EDIT_STORE_KEY) || '{}'); }
+    catch (e) { return {}; }
+  }
+  function saveEdit(key, html) {
+    const store = loadEdits();
+    store[key] = html;
+    localStorage.setItem(EDIT_STORE_KEY, JSON.stringify(store));
+  }
+  function makeEditable(el, key) {
+    if (!el || el.dataset.editableBound === '1') return;
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'false');
+    el.dataset.editableBound = '1';
+    const store = loadEdits();
+    if (store[key] != null) el.innerHTML = store[key];
+    el.addEventListener('blur', function() { saveEdit(key, el.innerHTML); });
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
+    });
+  }
+  function bindStaticEditables() {
+    const selector = '.title, .filter-label, .filter-item, .eyebrow, .prompt, .script-text, .script-note';
+    document.querySelectorAll('.wrap ' + selector).forEach(function(el, i) {
+      const step = el.closest('.step');
+      const stepKey = step ? ('step-' + step.getAttribute('data-step')) : 'top';
+      const siblings = Array.prototype.slice.call((step || document.querySelector('.wrap')).querySelectorAll(selector));
+      const idx = siblings.indexOf(el);
+      makeEditable(el, stepKey + ':' + el.className.replace(/\s+/g, '.') + ':' + idx);
+    });
+  }
+  function bindDynamicEditables(container, prefix) {
+    if (!container) return;
+    const selector = '.script-text, .script-note, .eyebrow';
+    container.querySelectorAll(selector).forEach(function(el, i) {
+      makeEditable(el, prefix + ':' + i);
+    });
+  }
+
+  const _origChoosePain = choosePain;
+  choosePain = function(pain) {
+    const store = loadEdits();
+    const freqKey = 'painLines.' + pain + '.freq';
+    const costKey = 'painLines.' + pain + '.cost';
+    const freqHtml = store[freqKey] != null ? store[freqKey] : painLines[pain].freq;
+    const costHtml = store[costKey] != null ? store[costKey] : painLines[pain].cost;
+    painChoice = pain;
+    document.getElementById('freqLine').innerHTML = '<p class="script-text">' + freqHtml + '</p>';
+    document.getElementById('costHandle').innerHTML = '<p class="script-text">' + costHtml + '</p>';
+    const freqEl = document.querySelector('#freqLine .script-text');
+    const costEl = document.querySelector('#costHandle .script-text');
+    makeEditable(freqEl, freqKey);
+    makeEditable(costEl, costKey);
+    goTo(2);
+  };
+
+  const _origShowObj = showObj;
+  showObj = function(id) {
+    _origShowObj(id);
+    if (activeObj === id) {
+      bindDynamicEditables(document.getElementById('objDisplay'), 'obj.' + id);
+      const display = document.getElementById('objDisplay');
+      display.querySelectorAll('.script-text, .script-note').forEach(function(el, i) {
+        const key = 'obj.' + id + ':' + i;
+        el.addEventListener('blur', function() {
+          const obj = objections.find(function(o) { return o.id === id; });
+          if (obj) obj.html = display.innerHTML;
+        });
+      });
+    }
+  };
+
+  bindStaticEditables();
   renderObjGrid();
   renderProgress();
 </script>

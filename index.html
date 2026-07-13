@@ -334,7 +334,7 @@
 
   <div class="edit-hint">
     <span class="edit-hint-dot"></span>
-    Tap any line to edit. Press &amp; hold a button to rename it. Changes save automatically.
+    Tap a script line to edit. Everything else is locked. Changes save automatically.
   </div>
 
   <div class="filter-box">
@@ -849,18 +849,19 @@
     });
   }
   function bindStaticEditables() {
-    const selector = '.title, .filter-label, .filter-item, .eyebrow, .prompt, .script-text, .script-note';
-    document.querySelectorAll('.wrap ' + selector).forEach(function(el, i) {
+    const selector = '.script-text';
+    document.querySelectorAll('.wrap ' + selector).forEach(function(el) {
       const step = el.closest('.step');
-      const stepKey = step ? ('step-' + step.getAttribute('data-step')) : 'top';
-      const siblings = Array.prototype.slice.call((step || document.querySelector('.wrap')).querySelectorAll(selector));
+      const container = step || el.closest('.vm-panel') || document.querySelector('.wrap');
+      const stepKey = step ? ('step-' + step.getAttribute('data-step')) : (container.id || 'top');
+      const siblings = Array.prototype.slice.call(container.querySelectorAll(selector));
       const idx = siblings.indexOf(el);
-      makeEditable(el, stepKey + ':' + el.className.replace(/\s+/g, '.') + ':' + idx);
+      makeEditable(el, stepKey + ':script-text:' + idx);
     });
   }
   function bindDynamicEditables(container, prefix) {
     if (!container) return;
-    const selector = '.script-text, .script-note, .eyebrow';
+    const selector = '.script-text';
     container.querySelectorAll(selector).forEach(function(el, i) {
       makeEditable(el, prefix + ':' + i);
     });
@@ -968,7 +969,6 @@
   }
 
   bindStaticEditables();
-  bindChoiceButtons();
   renderObjGrid();
   renderProgress();
 </script>
